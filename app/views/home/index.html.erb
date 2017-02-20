@@ -1,0 +1,31 @@
+<h1><%= current_user.email %></h1>
+<%= link_to 'logout', '/logout' %>
+<%= form_tag '/create_tweet' do %>
+<%= text_area_tag :content %>
+<br>
+<%= submit_tag "Create Tweet" %>
+<% end %>
+<% @tweets.each do |tweet| %>
+<% tweet.each do |current| %>
+<%= current.content %>
+<%= current.total %>
+<%= puts("SDFSDFASDasdasdasd#{current.total}")%>
+<%= current.user.email %>
+<% if current.likes.where(user_id:current_user).first %>
+<%= link_to "Unlike" ,url_for(controller: "home", action: "liketweet", tweet_id: current.id), method: :post %>
+<% else %>
+<%= link_to "like", url_for(controller: :home, action: :liketweet, tweet_id: current.id), method: :post %>
+<% end %>
+<% end %>
+<br>
+<% end %>
+<% User.all.each do |user| %>
+<%= user.email %>
+<% if user.follower_mappings.where(follower_id:current_user).first %>
+<%= link_to "UnFollow" ,url_for(controller: "home", action: "follow", followee_id:user.id), method: :post %>
+<% else %>
+<%= link_to "Follow", url_for(controller: "home", action: "follow", followee_id:user.id), method: :post %>
+<% end %>
+<br>
+<% end %>
+
